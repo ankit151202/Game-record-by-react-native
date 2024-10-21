@@ -4,7 +4,7 @@
     "slug": "ParentalControlApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/profile.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -16,12 +16,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/splash.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anurag24_26.ParentalControlApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dc9902d3-e7ed-4396-9275-cb6ee21ca3d3"
+      }
     }
   }
 }

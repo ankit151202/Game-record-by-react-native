@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
-
+import { LinearGradient } from 'expo-linear-gradient'; 
+import CustomHeader from './CustomHeader';
 const slides = [
   { title: 'Welcome!', description: 'Manage your child\'s app usage easily.' },
   { title: 'Set Limits', description: 'You can set daily usage limits for different apps.' },
@@ -9,6 +10,9 @@ const slides = [
 
 const OnboardingScreen = ({ navigation }) => {
   return (
+<LinearGradient colors={['#E0E0E0', '#FFFFFF']} style={styles.container}>
+<CustomHeader title="Tour"  />
+<Text style={styles.welcomeText}>Instructions!</Text>
     <ScrollView style={styles.container}>
       {slides.map((slide, index) => (
         <View key={index} style={styles.slide}>
@@ -18,14 +22,16 @@ const OnboardingScreen = ({ navigation }) => {
       ))}
       <Button title="Get Started" onPress={() => navigation.replace('Home')} />
     </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212',
+    
     padding: 20,
+    paddingTop:140,
   },
   slide: {
     marginBottom: 40,
@@ -36,7 +42,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   description: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontSize: 16,
   },
 });
