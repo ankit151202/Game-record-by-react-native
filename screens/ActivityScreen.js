@@ -1,25 +1,42 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
+import CustomHeader from './CustomHeader';
+import { LinearGradient } from 'expo-linear-gradient'; 
+import * as Notifications from 'expo-notifications';
 
-const ActivityScreen = () => {
-  const activities = [
-    { id: 1, name: 'Tommy', timeLimit: 'Unlimited' },
-    { id: 2, name: 'Estelle', timeLimit: '2 hours/day' },
-    { id: 3, name: 'Lucas', timeLimit: '3 hours/day' },
-  ];
+const ActivityScreen = ({ navigation }) => {
+  const [notifications, setNotifications] = useState([]);
+  
+  useEffect(() => {
+    // Function to handle incoming notifications
+    const subscription = Notifications.addNotificationReceivedListener(notification => {
+      const { title, body } = notification.request.content;
+      const newNotification = { title, body, date: new Date().toISOString() };
+      setNotifications(prev => [...prev, newNotification]);
+    });
+
+    // Clean up the subscription on unmount
+    return () => subscription.remove();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Time Limits for Family Members</Text>
-      <View style={styles.activityList}>
-        {activities.map((activity) => (
-          <View key={activity.id} style={styles.activityCard}>
-            <Text style={styles.activityName}>{activity.name}</Text>
-            <Text style={styles.activityLimit}>Time Limit: {activity.timeLimit}</Text>
-          </View>
-        ))}
+    <LinearGradient colors={['#E0E0E0', '#FFFFFF']} style={styles.container}>
+       <CustomHeader title="Activity" navigation={navigation} />
+      <View style={styles.container}>
+        <Text style={styles.notificationsTitle}>Notifications</Text>
+        <FlatList
+          data={notifications}
+          renderItem={({ item }) => (
+            <View style={styles.notificationCard}>
+              <Text style={styles.notificationTitle}>{item.title}</Text>
+              <Text style={styles.notificationBody}>{item.body}</Text>
+              <Text style={styles.notificationDate}>{item.date}</Text>
+            </View>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -27,35 +44,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#121212',
+    paddingTop: 120,
   },
-  title: {
-    fontSize: 24,
+  notificationsTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 20,
+    color: '#000000',
+    
   },
-  activityList: {
-    marginTop: 10,
-  },
-  activityCard: {
-    backgroundColor: '#1F1F1F',
+  notificationCard: {
+    backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 2,
   },
-  activityName: {
-    fontSize: 16,
-    color: '#FFFFFF',
+  notificationTitle: {
     fontWeight: 'bold',
+    color: '#000',
   },
-  activityLimit: {
-    color: '#B0B0B0',
+  notificationBody: {
+    color: '#555',
+  },
+  notificationDate: {
+    color: '#999',
+    fontSize: 12,
   },
 });
 
